@@ -19,15 +19,16 @@ class TwitterBot():
         self.bot      = webdriver.Chrome()
     
     def login(self):
-#        print("test")
         bot = self.bot
-        bot.get("https://twitter.com/")
+        bot.get("https://twitter.com/login")
         bot.maximize_window()
-        time.sleep(6)
-        email    = bot.find_element_by_name('session[username_or_email]')
-        password = bot.find_element_by_name('session[password]')
+        time.sleep(7)
+        email    = bot.find_element_by_xpath('//*[@id="page-container"]/div/div[1]/form/fieldset/div[1]/input')
+        password = bot.find_element_by_xpath('//*[@id="page-container"]/div/div[1]/form/fieldset/div[2]/input')
+            
         email.clear()
         password.clear()
+        
         email.send_keys(self.username)
         password.send_keys(self.password)
         password.send_keys(Keys.RETURN)
@@ -40,9 +41,13 @@ class TwitterBot():
         for i in range(1, 2):
             bot.execute_script('window.scrollTo(0, document.body.scrollHeight)')
             time.sleep(2)
-            tweets = bot.find_element_by_class_name('css-1dbjc4n')
-#            links = [elem.get_attribute('data-permalink-path') for elem in tweets]
-            print(tweets.get_property('attributes')[0])
+            tweets = bot.find_elements_by_class_name("css-1dbjc4n")
+            for i in tweets:
+                [print(link.text) for link in bot.find_elements_by_class_name("css-1dbjc4n")]
+#                print(">>>> ", i.find_elements_by_class_name("css-4rbku5"))
+#                links = [elem.get_attribute('a') for elem in tweets]
+    #            print(tweets.get_property('attributes')[0])
+#                print(links)
         
     
 def Main():
